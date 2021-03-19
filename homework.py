@@ -47,7 +47,7 @@ class CashCalculator (Calculator):
             if today < self.limit:
                 return f'На сегодня осталось {self.limit - today} руб'
             elif today == self.limit:
-                return (f'Денег нет, держись')
+                return ('Денег нет, держись')
             else:
                 return (f'Денег нет, держись: твой долг - '
                         f'{-(self.limit - today)} руб')
@@ -56,7 +56,7 @@ class CashCalculator (Calculator):
                 return (f'На сегодня осталось '
                         f'{round((self.limit - today)/USD_RATE, 2)} USD')
             elif today == self.limit:
-                return (f'Денег нет, держись')
+                return ('Денег нет, держись')
             else:
                 return (f'Денег нет, держись: твой долг - '
                         f'{round((-(self.limit - today))/USD_RATE, 2)} USD')
@@ -65,7 +65,7 @@ class CashCalculator (Calculator):
                 return (f'На сегодня осталось '
                         f'{round((self.limit - today)/EURO_RATE, 2)} Euro')
             elif today == self.limit:
-                return (f'Денег нет, держись')
+                return ('Денег нет, держись')
             else:
                 return (f'Денег нет, держись: твой долг - '
                         f'{round((-(self.limit - today))/EURO_RATE, 2)} Euro')
@@ -79,4 +79,4 @@ class CaloriesCalculator(Calculator):
             return (f'Сегодня можно съесть что-нибудь ещё, но с общей '
                     f'калорийностью не более {self.limit - today} кКал')
         else:
-            return (f'Хватит есть!')
+            return ('Хватит есть!')
