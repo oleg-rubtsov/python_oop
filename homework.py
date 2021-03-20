@@ -48,25 +48,20 @@ class CashCalculator (Calculator):
         else:
             raise ZeroDivisionError()
         today = self.get_today_stats()
-        slovar = {
-            'rub': 'руб',
-            'usd': 'USD',
-            'eur': 'Euro'
-        }
         rates = {
-            'rub': self.RUB_RATE,
-            'usd': self.USD_RATE,
-            'eur': self.EURO_RATE
+            'rub': (self.RUB_RATE, 'руб'),
+            'usd': (self.USD_RATE, 'USD'),
+            'eur': (self.EURO_RATE, 'Euro')
         }
-        ostatok = round((self.limit - today) / rates[currency], 2)
+        ostatok = round((self.limit - today) / rates[currency][0], 2)
         if today < self.limit:
             return (f'На сегодня осталось '
-                    f'{ostatok} {slovar[currency]}')
+                    f'{ostatok} {rates[currency][1]}')
         elif today == self.limit:
             return ('Денег нет, держись')
         else:
             return (f'Денег нет, держись: твой долг - '
-                    f'{-ostatok} {slovar[currency]}')
+                    f'{-ostatok} {rates[currency][1]}')
 
 
 class CaloriesCalculator(Calculator):
