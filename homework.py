@@ -21,11 +21,15 @@ class Calculator:
 
     def get_today_stats(self):
         result = 0
-        date_today = dt.datetime.today().date()
+        date_today = dt.date.today()
         for record in self.records:
             if record.date == date_today:
                 result += record.amount
         return result
+
+    def get_today_ostatok(self):
+        today = self.get_today_stats()
+        return self.limit - today
 
     def get_week_stats(self):
         result = 0
@@ -43,33 +47,30 @@ class CashCalculator (Calculator):
     RUB_RATE = 1
 
     def get_today_cash_remained(self, currency):
-        if currency == "rub" or currency == "usd" or currency == "eur":
-            pass
-        else:
-            raise ZeroDivisionError()
-        today = self.get_today_stats()
         rates = {
             'rub': (self.RUB_RATE, 'руб'),
             'usd': (self.USD_RATE, 'USD'),
             'eur': (self.EURO_RATE, 'Euro')
         }
-        ostatok = round((self.limit - today) / rates[currency][0], 2)
-        if today < self.limit:
+        if currency not in rates:
+            raise ZeroDivisionError()
+        ostatok = self.get_today_ostatok()
+        balance = round((ostatok / rates[currency][0]), 2)
+        if balance > 0:
             return (f'На сегодня осталось '
-                    f'{ostatok} {rates[currency][1]}')
-        elif today == self.limit:
+                    f'{balance} {rates[currency][1]}')
+        elif balance == 0:
             return ('Денег нет, держись')
         else:
             return (f'Денег нет, держись: твой долг - '
-                    f'{-ostatok} {rates[currency][1]}')
+                    f'{-balance} {rates[currency][1]}')
 
 
 class CaloriesCalculator(Calculator):
 
     def get_calories_remained(self):
-        today = self.get_today_stats()
-        ostatok = self.limit - today
-        if today < self.limit:
+        ostatok = self.get_today_ostatok()
+        if ostatok > 0:
             return (f'Сегодня можно съесть что-нибудь ещё, но с общей '
                     f'калорийностью не более {ostatok} кКал')
         else:
